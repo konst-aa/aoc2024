@@ -19,8 +19,6 @@ def part_1(l):
     return True
 
 def part_2(l):
-    if part_1(l):
-        return True
     for i in range(len(l)):
         temp = [n for n in l]
         del temp[i]
