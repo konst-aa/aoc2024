@@ -1,7 +1,7 @@
 import Data.Char
 import Data.List
 
-import Text.Regex.Posix
+import Text.Regex
 
 
 parsePref :: String -> String -> Maybe String
@@ -41,31 +41,35 @@ part2 s True a
 part2 s b a = part2 (drop 1 s) b a
 
 
--- now with regex
+-- :(
 mulString = "(mul\\(([0-9]+),([0-9]+)\\))"
+mulStringRe = mkRegex mulString
 doParens = "(do\\(\\))"
 dontParens = "(don't\\(\\))"
-allRe = mulString ++ "|" ++ doParens ++ "|" ++ dontParens
+allRe = mkRegex $ mulString ++ "|" ++ doParens ++ "|" ++ dontParens
 
--- when the posix regex library makes the code as ugly as bash
 part1Re :: String -> Int
 part1Re s
-  | (_ :: String, _ :: String, after, [_, a, b]) <- s =~ mulString =
+  | Just (_, _, after, [_, a, b]) <- matchRegexAll mulStringRe s =
       (read a * read b) + part1Re after
   | otherwise = 0
 
 part2Re :: String -> Bool -> Int
+part2Re s _
+  | Nothing <- matchRegexAll allRe s = 0 -- ensure matches
+
 part2Re s True
   | match == "don't()" = part2Re after False
   | match == "do()" = part2Re after True
   | isPrefixOf "mul(" match =
       read (head $ drop 1 res) * read (head $ drop 2 res) + part2Re after True
   | otherwise = 0
-  where (_ :: String, match, after, res :: [String]) = s =~ allRe
+  where Just (_, match, after, res) = matchRegexAll allRe s
+
 part2Re s False
   | match == "do()" = part2Re after True
   | otherwise = part2Re after False
-  where (_ :: String, match, after, res :: [String]) = s =~ allRe
+  where Just (_, match, after, res) = matchRegexAll allRe s
 
 
 main :: IO ()
@@ -74,7 +78,7 @@ main = do
   putStrLn "Handmade solution"
   print $ part1 contents 0
   print $ part2 contents True 0
-  putStrLn "Using POSIX regex"
+  putStrLn "Using regex"
   print $ part1Re contents
   print $ part2Re contents True
 
