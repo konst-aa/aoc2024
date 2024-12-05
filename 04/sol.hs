@@ -12,7 +12,8 @@ pred1 "SAMX" = 1
 pred1 _ = 0
 
 ixList :: Ix i => Array i t -> [i] -> [t]
-ixList arr is = map (arr ! ) is
+ixList arr is = map (arr !) is
+
 
 checkRow :: Array (Int, Int) Char -> (Int, Int) -> Int
 checkRow grid (i, j)
