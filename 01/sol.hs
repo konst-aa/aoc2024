@@ -13,3 +13,4 @@ main = do
     sum $ map (abs . (uncurry (-))) $ zip (sort a) (sort b)
   print $
     sum $ map (\n -> n * findWithDefault 0 n c) a
+
