@@ -9,15 +9,18 @@ for rule in rules.split():
     if a not in rd:
         rd[a] = []
     rd[a].append(b)
-c = 0
 
+c = 0
 others = []
+
 for en in e.split():
     l = list(map(int, en.split(",")))
     t = {}
     for i, n in enumerate(l):
         t[n] = i
+
     fail = False
+
     for n, i in t.items():
         if n not in rd:
             continue
@@ -25,6 +28,8 @@ for en in e.split():
         for r in rs:
             if r in t and t[r] < i:
                 fail = True
+        if fail:
+            break
 
     if not fail:
         c += l[len(l)//2]
@@ -33,34 +38,19 @@ for en in e.split():
 
 print(c)
 
-def comp(a, b):
-    if b not in rd:
-        return a
-    if a not in rd:
-        return b
 c = 0
+
 for o in others:
     acc = []
     while len(o) > 0:
         for n, i in o.items():
-            if n not in rd:
+            if n not in rd or not any(map(lambda k: k in o, rd[n])):
                 acc.append(n)
                 del o[n]
                 break
-
-            t = False
-            for k in rd[n]:
-                if k in o:
-                    t = True
-                    break
-            if not t:
-                acc.append(n)
-                del o[n]
-                break
-
 
     acc.reverse()
     c += acc[len(acc)//2]
 
 print(c)
-        
+
