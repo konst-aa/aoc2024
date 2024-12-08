@@ -24,7 +24,6 @@ change E = S
 change S = W
 change W = N
 
-
 inBounds :: Bounds -> (Int, Int) -> Bool
 inBounds ((1,1), (rows, cols)) (i, j) =
     i >= 1 && i <= rows && j >= 1 && j <= cols
