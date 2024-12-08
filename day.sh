@@ -12,9 +12,13 @@ if [ -f sol.py ] && [ -x "$(command -v python3)" ]; then
 fi
 
 
-if [ -f sol.hs ] && [ -x "$(command -v runhaskell)" ]; then
+if [ -f sol.hs ] && [ -x "$(command -v ghc)" ]; then
 	echo 'haskell sol:'
-	time runhaskell sol.hs
+    echo compiling
+    ghc -O2 sol.hs > /dev/null
+    echo running
+    time ./sol
+	# time runhaskell sol.hs
     echo
 fi
 

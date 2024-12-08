@@ -59,6 +59,8 @@ steps = 0
 previous = None
 
 dupes = set()
+print("this will take a while (~15s)")
+
 while True:
     i, j = turtle
     grid[i][j] = 1
