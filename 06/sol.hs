@@ -61,7 +61,6 @@ part2 start ds g b p d
               writeArray g p' '#'
               toAdd <- part2H g b S.empty start N
               writeArray g p' '.'
-              pure $ S.insert p' ds
               pure $ if toAdd && p' /= start
                         then S.insert p' ds
                         else ds 
